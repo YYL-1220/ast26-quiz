@@ -1,0 +1,33 @@
+author: b0yi
+date: 2026-03-06
+question: |
+  假設有一顆採用 DFTL 架構的 SSD，其 SRAM 中的 CMT (Cached Mapping Table)
+  僅能同時容納 2 個 Translation Pages (TP)。
+  目前 CMT 已滿，且內部的 2 個 TP 皆為 Dirty。
+  當使用者發出一筆針對不同 LBA 的寫入請求 (LBA_0)時，
+  假設這個 LBA 隸屬於 TP_0，
+  且這個 TP_0目前不在 CMT 中。
+
+  請教：在最壞情況下，為了完成這筆使用者資料的寫入，
+  NAND Flash 總共會產生多少次「讀取」與「寫入」操作？
+  （請分別計算 Data Page 與 Translation Page 的次數）
+options:
+  - text: "First option (the correct one in this example)"
+    correct: true
+    explanation: |
+      第一筆寫入 LBA 0 :
+      1. 選一個 CMT 中的 TP 作為 Victim TP 並更新回 GTD。
+        - 1 次 TP Write
+      2. 將 LBA_0 的 Translation page TP_0 從 GTD 載入 CMT。
+        - 1 次 TP Read
+      3. 將 LBA_0 寫入 NAND。
+        - 1 次 Data Page Write
+      ANS : 
+      總共會產生 1 次 TP Write，1 次 TP Read，1 次 Data Page Write
+  - text: "Second option (a plausible wrong answer)"
+    explanation: |
+  - text: "Third option"
+    explanation: |
+  - text: "Fourth option"
+    explanation: |
+
