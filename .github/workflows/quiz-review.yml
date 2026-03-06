@@ -67,6 +67,7 @@ jobs:
         run: node scripts/claude-review.js ${{ steps.changed.outputs.all_changed_files }}
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
 
       - name: Post Claude review results
         if: always() && steps.changed.outputs.any_changed == 'true'
