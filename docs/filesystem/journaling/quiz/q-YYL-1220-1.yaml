@@ -8,7 +8,7 @@ options:
 "
     correct: true
     explanation: |
-      data=journal 模式運作時，任何資料寫入硬碟正式位置前，都必須原封不動地在 journaling area 寫一份。 Jouranl 確定 commit 後才把資料 checkpoint 到 filesystem的正式區塊中，而且因為「 journaling area 寫一次、 main storage area 寫一次」造成的 write amplification，導致 disk I/O負載接近翻倍，寫入效能明顯下降(特別是大檔案)
+      data=journal 模式運作時，任何資料寫入硬碟正式位置前，都必須原封不動地在 journaling area 寫一份。 Jouranl 確定 commit 後才把資料 checkpoint 到 filesystem 的正式區塊中，而且因為「 journaling area 寫一次、 main storage area 寫一次」造成的 write amplification，導致 disk I/O 負載接近翻倍，寫入效能明顯下降(特別是大檔案)
   - text: "因為此模式也將資料寫入 journal，所以在系統重開機自動執行 journal replay 後，必定能完全避免任何 on-disk data 的遺失。"
     explanation: |
       忽略了 transaction 的 commit 點，斷電的瞬間這筆資料有可能「正在寫入 jouranl 但 transaction 還沒完成 commit 」，那重開機執行 journal replay 時， file system 會認定此 transaction 不完整，進而丟棄、忽略。所以即使資料碰到硬碟，但只要沒有 commit ，這部分資料重開機後依然會消失，它只能保證 Crash Consistency ，但無法保證資料會不會遺失。
