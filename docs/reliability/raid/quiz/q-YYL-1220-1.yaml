@@ -12,7 +12,7 @@ options:
       Read bandwidth 相似，兩者效能的差異通常不在 read latency 或 throughput 上。
   - text: "RAID 10 提供的有效容量只有 RAID 01 的一半"
     explanation: |
-      兩者 space efficiency 均為0.5
+      兩者 space efficiency 均為 0.5
   - text: "RAID 01 使用 Parity 計算而 RAID 10 不使用"
     explanation: |
       兩者都是 RAID 0 與 RAID 1 的組合，皆不涉及 parity 。
