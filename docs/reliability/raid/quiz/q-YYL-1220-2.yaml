@@ -1,7 +1,7 @@
 author: YYL-1220
 date: 2026-05-29
 question: |
-  某家大型雲端服務商的儲存團隊最近遇到了一個問題。他們原先在基礎設施中大量部署了基於 RAID 4 架構的企業級 SSD 陣列來儲存交易日誌。然而，在雙十一購物節等高併發交易期間，維運監控系統發出頻繁告警。數據顯示，陣列中其中一顆特定編號的硬碟，其 I/O latency 遠高於其他硬碟 ，且該硬碟的 write amplification 與極快的區塊磨損速度成為整個儲存系統效能與壽命的瓶頸。  為了解決這個嚴重的 small-write problem ，團隊決定在不重寫上層作業系統與應用程式的前提下，將底層陣列架構從 RAID 4 平滑升級為 RAID 5 後，成功消除了原先系統在面臨大量 random small-write 時產生的特定硬碟效能熱點。請問 RAID 5 主要是透過何種核心技術或機制來達成此項改善？
+  某 RAID 4 陣列在 random small-write workload 下，parity disk 承擔了所有 stripe 的 parity 更新，成為效能與壽命的瓶頸，I/O latency 跟 write amplification 都明顯高於其他磁碟。請問 RAID 5 可以透過什麼機制改善？
 options:
   - text: "將 parity block 交錯分散在陣列中的所有磁碟上"
     correct: true
@@ -13,7 +13,7 @@ options:
       RAID 5 依然需要高頻率執行 bitwise XOR 運算來計算 parity ，並沒有捨棄該計算，因此無法以此減少 latency。
   - text: "使用 mirroring 完全替代 parity block"
     explanation: |
-      雖然 mirroring 能提供極高的 random I/O 效能 ，但空間代價高達 50% 。團隊為了維持既有的高容量利用率（Capacity = $(N-1) \cdot B$），依然保留了 parity 設計 。
+      雖然 mirroring 能提供極高的 random I/O 效能 ，但空間利用率只有 50% ，無法維持原本系統之容量利用率。
   - text: "增加陣列中磁碟的總數量（N）來提高整體的容錯能力"
     explanation: |
       升級前後的硬碟總數保持不變，且從 reliability 來看，RAID 5 與 RAID 4 的容錯能力相同，都只能容忍單一磁碟損壞。
